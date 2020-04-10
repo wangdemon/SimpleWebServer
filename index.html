@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> SimpleWebServer </title>
+        <meta name="viewport" charset="utf-8" content="width=device-width, initial-scale=1.0"/>
+	</head>
+
+        <body onload='start()'>
+
+            <label style="position: absolute; top:5px; width:400px; text-align: center;">__________________ WebSocket __________________</label>
+            <input style="position: absolute; top:30px; width:280px;" type="text" id="inputWebSocket" value="web socket message">
+            <button style="position: absolute; top:30px; left:300px; width:100px;" onclick="sendToWebSocketServer()">Send</button>
+            <textarea style="position: absolute; top:60px; width:385px; height:200px; resize: none;" id="textWebSocket"></textarea>
+
+            <label style="position: absolute; top:305px; width:400px; text-align: center;">________________ XMLHttpRequest ________________</label>
+            <input style="position: absolute; top:330px; width:280px;" type="text" id="inputXmlHttpRequest" value="POST message">
+            <button style="position: absolute; top:330px; left:300px; width:100px;" onclick="sendToXmlHttpRequest()">Send</button>
+            <textarea style="position: absolute; top:360px; width:385px; height:200px; resize: none;" id="textXmlHttpRequest"></textarea>
+			
+	</body>
+	
+	<script>
+	
+        var webSocket;
+        var xmlHttpRequest;
+
+        function start()
+        {
+            startWebSocket();
+            startXmlHttpRequest();
+        }
+
+        // __________________ WebSocket __________________
+
+        function startWebSocket()
+        {
+            webSocket = new WebSocket('ws://' + window.location.hostname + ':8081/');
+            webSocket.onmessage = function(event){readFromWebSocket(event.data);};
+        }
+
+        function readFromWebSocket(data)
+        {
+            var textWebSocket = document.getElementById('textWebSocket');
+            textWebSocket.value += data + '\n';
+        }
+
+        function sendToWebSocketServer()
+        {
+            var inputWebSocket = document.getElementById('inputWebSocket');
+            webSocket.send(inputWebSocket.value);
+        }
+
+        // ________________ XMLHttpRequest ________________
+
+        function startXmlHttpRequest()
+        {
+            xmlHttpRequest = new XMLHttpRequest();
+            xmlHttpRequest.onload = function(){readFromXmlHttpRequest(xmlHttpRequest.responseText);};
+        }
+
+        function readFromXmlHttpRequest(data)
+        {
+            var textXmlHttpRequest = document.getElementById('textXmlHttpRequest');
+            textXmlHttpRequest.value += data + '\n';
+        }
+
+        function sendToXmlHttpRequest()
+        {
+            var inputXmlHttpRequest = document.getElementById('inputXmlHttpRequest');
+
+            xmlHttpRequest.open('POST', 'index.html?' + inputXmlHttpRequest.value);
+            xmlHttpRequest.send(inputXmlHttpRequest.value);
+        }
+
+	</script>
+	
+</html>
