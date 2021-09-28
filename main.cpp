@@ -2,7 +2,7 @@
 #include "serverhttp.h"
 #include "serverweb.h"
 
-// Example of a request response function
+// Example of a response function
 void requestHandler(QTcpSocket *socket, const QString &method, const QString &path,
                     const QStringList &cookies, const QByteArray &requestData)
 {
@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
     serverHttp.start();         // Opening a port for incoming requests
 
     // Set an incoming request handler
-    // !!! If you need to send files from the set folder, comment out this line !!!
+    // !!! If you need just to send files from the set folder, comment out this line !!!
     QObject::connect(&serverHttp, &ServerHttp::request, requestHandler);
 
     // Create simple web-sockets-server
