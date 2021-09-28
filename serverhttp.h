@@ -34,7 +34,7 @@ public slots:
     void requestHandler(QTcpSocket* socket, const QString &method, const QString &path,
                         const QStringList &cookies, const QByteArray &requestData);
     QByteArray getData(const QString &name);
-    QByteArray createHeader(const QString &path, int dataSize, const QStringList &cookies);
+    static QByteArray createHeader(const QString &path, int dataSize, const QStringList &cookies);
 
 private slots:
     void newSocketConnected();
